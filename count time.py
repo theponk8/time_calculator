@@ -1,9 +1,3 @@
-#needs to print the cost out in full as in $49.50: DONE
-#needs to log the information in a file: DONE
-#needs to save variable for after restart
-#could add in a input for customer name
-#fix bug where program crashes if you type anything before pausing
-
 
 import time
 import webbrowser
