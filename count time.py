@@ -38,7 +38,7 @@ def count_time():
 print "############################################"
 print "############### TIME_COUNTER ###############"
 print "############################################\n\n"
-print "Press \"Ctrl + C\" to stop pause the counter\nEnter to start."
+print "Press \"Ctrl + C\" to stop pause the counter\n Any key to start."
 raw_input ("")
 
 print ("\nStarted at:" +time.ctime())
