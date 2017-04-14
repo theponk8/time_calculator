@@ -43,7 +43,7 @@ def mainloop():
 		time.sleep(1)
 		#needs an interrupt of some description, realistically the if statement should work, but it does not
 		mainloop()
-	mainloop()
+
 	
 		
 			
