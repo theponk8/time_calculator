@@ -25,10 +25,12 @@ def mainloop():
 	print "Executing main loop"
 	#this if statement refuses to trigger
 	#don't know how to make an interruptable loop with a gui
+	#check if our timer is on or off, if it's on then do the stuff
 	if timerstarted == '1':
 		print "timestuff happened"
 		seconds = seconds + 1
 		time.sleep(1)
+		#needs an interrupt of some description
 		mainloop()
 	
 		
@@ -42,20 +44,25 @@ def submitname(var):
 	#then we print it out
 	print (name)
 	
+#this triggers when you click the start button
 def starttimer(var):
 	print "Started timer"
+	#this is the control variable for the timer, setting it to one should turn it on
 	timerstarted = 1;
+	#update the start time in the gui with the current time as we just started
 	starttime = time.ctime()
 	app.setLabel("label_starttime", starttime)
 	print starttime
+	#not sure if this should be called elsewhere
 	mainloop()
 	
 		
 
 
-	
+#this is what happens when we click the stop button
 def stoptimer(var):
 	print "Stopped timer"
+	#our timer control variable is set to zero, off
 	timerstarted = 0;
 	
 
