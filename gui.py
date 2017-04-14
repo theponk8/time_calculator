@@ -20,8 +20,7 @@ hours = 0
 #set our customer name to null if we just started
 name = "NULL"
 
-#this is what happens when we click the submit button for name
-#it must accept an input, even if you don't need one
+#A loop that is supposed to count our seconds
 def mainloop():
 	print "Executing main loop"
 	#this if statement refuses to trigger
@@ -34,7 +33,8 @@ def mainloop():
 	
 		
 			
-			
+#this is what happens when we click the submit button for name
+#it must accept an input, even if you don't need one			
 def submitname(var):
 	print "Submitted name:"
 	#here we grab the data from the input field entitled 'customername'
