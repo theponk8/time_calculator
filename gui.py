@@ -30,7 +30,7 @@ def mainloop():
 		print "timestuff happened"
 		seconds = seconds + 1
 		time.sleep(1)
-		#needs an interrupt of some description
+		#needs an interrupt of some description, realistically the if statement should work, but it does not
 		mainloop()
 	
 		
@@ -48,7 +48,7 @@ def submitname(var):
 def starttimer(var):
 	print "Started timer"
 	#this is the control variable for the timer, setting it to one should turn it on
-	timerstarted = 1;
+	timerstarted = 1
 	#update the start time in the gui with the current time as we just started
 	starttime = time.ctime()
 	app.setLabel("label_starttime", starttime)
@@ -63,7 +63,7 @@ def starttimer(var):
 def stoptimer(var):
 	print "Stopped timer"
 	#our timer control variable is set to zero, off
-	timerstarted = 0;
+	timerstarted = 0
 	
 
 
