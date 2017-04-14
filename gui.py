@@ -18,7 +18,8 @@ init = 0
 if init == 0:
     initialise()
     init = 1
-
+	
+print "blah"
 
 
 # top slice - CREATE the GUI
