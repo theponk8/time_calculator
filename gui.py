@@ -18,8 +18,22 @@ init = 0
 if init == 0:
     initialise()
     init = 1
+	
+#this is what happens when we click the stop button
 
+def stoptimer(var):
+	global name, seconds, minutes, hours, timerstarted
+	print "Stop Clicked"
+	raise ValueError('A very specific bad thing happened')
+	#our timer control variable is set to zero, off
+	timerstarted = 0
 
+'''
+class stoptimer(Exception):
+    pass
+'''	
+
+#raise stoptimer("My hovercraft is full of eels")
 
 # top slice - CREATE the GUI
 app = gui("Timecalc - GUI V01")
@@ -32,19 +46,25 @@ app = gui("Timecalc - GUI V01")
 	
 #A loop that is supposed to count our seconds
 def mainloop():
+	global name, seconds, minutes, hours, timerstarted
 	print "Executing main loop"
 	#this if statement refuses to trigger
 	#don't know how to make an interruptable loop with a gui
 	#check if our timer is on or off, if it's on then do the stuff
 	print timerstarted
-	while timerstarted == 1:
-		print "timestuff happened"
-		seconds = seconds + 1
-		time.sleep(1)
-		#needs an interrupt of some description, realistically the if statement should work, but it does not
-		mainloop()
-
 	
+	try:
+		
+			print "timestuff happened"
+			seconds = seconds + 1
+			time.sleep(1)
+			#needs an interrupt of some description, realistically the if statement should work, but it does not
+			
+			mainloop()
+	except KeyboardInterrupt:
+		timestarted = 0
+
+
 		
 			
 #this is what happens when we click the submit button for name
@@ -58,6 +78,7 @@ def submitname(var):
 	
 #this triggers when you click the start button
 def starttimer(var):
+	global name, seconds, minutes, hours, timerstarted
 	print "Start Clicked"
 	#this is the control variable for the timer, setting it to one should turn it on
 	#for some reason, it keeps being set to 0
@@ -70,15 +91,10 @@ def starttimer(var):
 	#not sure if this should be called elsewhere
 	mainloop()
 	
+	
 		
 
 
-#this is what happens when we click the stop button
-def stoptimer(var):
-	print "Stop Clicked"
-	#our timer control variable is set to zero, off
-	timerstarted = 0
-	
 
 
 ### fillings go here ###
@@ -97,16 +113,17 @@ app.stopTab()
 
 app.startTab("Time Calculation")
 app.addLabel("label_starttime_prefix", "Start time:")
-app.addLabel("label_starttime", "<get current start time here>")
-app.addLabel("elapsed_time_prefix", "Elapsed time:")
-app.addLabel("label_currentime", "<store time elapsed here>")
+app.addLabel("label_starttime", "")
+app.addLabel("stoptime_time_prefix", "Stop time:")
+app.addLabel("label_stoptime", "")
+app.addLabel("finaltime_time_prefix", "Final time:")
+app.addLabel("label_finaltime", "")
 app.addButton("Start", starttimer)
 app.addButton("Stop", stoptimer)
 app.stopTab()
 
 app.stopTabbedFrame()
 
-
 # bottom slice - START the GUI
-mainloop()
+
 app.go()
