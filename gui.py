@@ -37,7 +37,7 @@ def mainloop():
 	#don't know how to make an interruptable loop with a gui
 	#check if our timer is on or off, if it's on then do the stuff
 	print timerstarted
-	if timerstarted == 1:
+	while timerstarted == 1:
 		print "timestuff happened"
 		seconds = seconds + 1
 		time.sleep(1)
