@@ -77,6 +77,9 @@ def starttimer(var):
 	#not sure if this should be called elsewhere
 	#mainloop()
 	
+def pause(var):	
+	print "paused"
+	
 		
 
 
@@ -123,6 +126,7 @@ app.addLabel("label_stoptime", "")
 app.addLabel("finaltime_time_prefix", "Final time:")
 app.addLabel("label_finaltime", "")
 app.addButton("Start", starttimer)
+app.addButton("Pause", pause)
 app.addButton("Stop", stoptimer)
 app.stopTab()
 
