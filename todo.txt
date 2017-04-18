@@ -5,3 +5,21 @@
 #fix bug where program crashes if you type anything before pausing
 #put logging into a function
 #put calculation into a funtion
+
+
+#We go back to the time & date grabbing system.
+
+ >And then it's easy enough to write in a function to store pauses as we can just keep adding the time paused to a variable
+ >then add that in for the time calculation
+
+#Have the pause button start when clicked, stop when clicked again.
+ 
+ >Possibly an indication in the GUI that we are paused, running, etc. 
+
+#Make the Gui nicer
+
+ >not sure what the limits of appjar are, Gui elements can be arranged though
+ >tabs are good, but maybe iconify some of the buttons, like start, pause and stop
+
+This could potentially go a lot further than anticipated,
+ A decent timer could easily be a part of a full blown POS system.
