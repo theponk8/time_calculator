@@ -1,7 +1,7 @@
 # import the library
 from appJar import gui
 
-import time
+import datetime
 ### http://appjar.info/pythonWidgets/
 ### http://appjar.info/pythonWidgetGrouping/
 def initialise():
@@ -12,28 +12,14 @@ def initialise():
 	minutes = 0
 	hours = 0
 	timerstarted = 0
-	
+		
 init = 0
 
 if init == 0:
     initialise()
     init = 1
-	
-#this is what happens when we click the stop button
 
-def stoptimer(var):
-	global name, seconds, minutes, hours, timerstarted
-	print "Stop Clicked"
-	raise ValueError('A very specific bad thing happened')
-	#our timer control variable is set to zero, off
-	timerstarted = 0
 
-'''
-class stoptimer(Exception):
-    pass
-'''	
-
-#raise stoptimer("My hovercraft is full of eels")
 
 # top slice - CREATE the GUI
 app = gui("Timecalc - GUI V01")
@@ -45,31 +31,29 @@ app = gui("Timecalc - GUI V01")
 
 	
 #A loop that is supposed to count our seconds
+'''
 def mainloop():
+	global timerstarted
 	global name, seconds, minutes, hours, timerstarted
 	print "Executing main loop"
 	#this if statement refuses to trigger
 	#don't know how to make an interruptable loop with a gui
 	#check if our timer is on or off, if it's on then do the stuff
 	print timerstarted
+	while timerstarted == 1:
+		print "timestuff happened"
+		seconds = seconds + 1
+		time.sleep(1)
+		#needs an interrupt of some description, realistically the if statement should work, but it does not
+		mainloop()
+'''
 	
-	try:
-		
-			print "timestuff happened"
-			seconds = seconds + 1
-			time.sleep(1)
-			#needs an interrupt of some description, realistically the if statement should work, but it does not
-			
-			mainloop()
-	except KeyboardInterrupt:
-		timestarted = 0
-
-
 		
 			
 #this is what happens when we click the submit button for name
 #it must accept an input, even if you don't need one			
 def submitname(var):
+	
 	print "Submitted name:"
 	#here we grab the data from the input field entitled 'customername'
 	name = app.getEntry("customername")
@@ -78,23 +62,43 @@ def submitname(var):
 	
 #this triggers when you click the start button
 def starttimer(var):
-	global name, seconds, minutes, hours, timerstarted
+	global starttime
+	#global timerstarted
 	print "Start Clicked"
 	#this is the control variable for the timer, setting it to one should turn it on
 	#for some reason, it keeps being set to 0
-	timerstarted = 1
-	print timerstarted
+	#timerstarted = 1
+	#print timerstarted
 	#update the start time in the gui with the current time as we just started
-	starttime = time.ctime()
+	starttime = datetime.datetime.now().replace(microsecond=0)
 	app.setLabel("label_starttime", starttime)
+	print "Start Time: "
 	print starttime
 	#not sure if this should be called elsewhere
-	mainloop()
-	
+	#mainloop()
 	
 		
 
 
+#this is what happens when we click the stop button
+def stoptimer(var):
+	global stoptime, endtime, result
+	#global timerstarted
+	stoptime = datetime.datetime.now().replace(microsecond=0)
+	print "Stop Time: "
+	print stoptime
+	app.setLabel("label_stoptime", stoptime)
+	endtime = starttime - stoptime
+	result = datetime.timedelta.total_seconds(endtime)
+	result = -result
+	strresult = str (result)
+	print "seconds: "
+	print result
+	print "Stop Clicked"
+	app.setLabel("label_finaltime", strresult)
+	#our timer control variable is set to zero, off
+	#timerstarted = 0
+	
 
 
 ### fillings go here ###
@@ -123,6 +127,7 @@ app.addButton("Stop", stoptimer)
 app.stopTab()
 
 app.stopTabbedFrame()
+
 
 # bottom slice - START the GUI
 
