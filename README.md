@@ -6,8 +6,4 @@ This branch houses the GUI application that is being worked on.
 Using the 'appjar' library, which is built on tkinter
 
 
-TODO:
-
-Port existing functionality from original time_calculator
-
-Set window size initially rather than on the fly
+Todolist has migrated to todo.txt
