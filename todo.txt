@@ -1,19 +1,19 @@
 #needs to print the cost out in full as in $49.50: DONE
 #needs to log the information in a file
-#needs to save variable for after restart
-#could add in a input for customer name
-#fix bug where program crashes if you type anything before pausing
-#put logging into a function
-#put calculation into a funtion
+#needs to save variable for after restart: loading partially implemented
+#could add in a input for customer name : DONE
+#redo logging, or copy from original
 
 
-#We go back to the time & date grabbing system.
 
+!!!DONE
+#We go back to the time & date grabbing system. 
  >And then it's easy enough to write in a function to store pauses as we can just keep adding the time paused to a variable
  >then add that in for the time calculation
 
-#Have the pause button start when clicked, stop when clicked again.
- 
+
+!!!DONE
+#Have the pause button start when clicked, stop when clicked again. 
  >Possibly an indication in the GUI that we are paused, running, etc. 
 
 #Make the Gui nicer

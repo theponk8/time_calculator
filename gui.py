@@ -1,23 +1,9 @@
 # import the library
 from appJar import gui
-
+var = 0
 import datetime
 ### http://appjar.info/pythonWidgets/
 ### http://appjar.info/pythonWidgetGrouping/
-def initialise():
-	print "initialising variables"
-	global name, seconds, minutes, hours, timerstarted
-	name = "NULL"
-	seconds = 0
-	minutes = 0
-	hours = 0
-	timerstarted = 0
-		
-init = 0
-
-if init == 0:
-    initialise()
-    init = 1
 
 
 
@@ -48,8 +34,32 @@ def mainloop():
 		mainloop()
 '''
 	
-		
-			
+def initialise(var):
+	print "initialising variables"
+	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime
+	name = "NULL"
+	seconds = 0
+	minutes = 0
+	hours = 0
+	timerstarted = 0
+	ispaused = 2
+	pausetime = 0
+	stoppause = 0
+	startpause = 0
+	starttime = 0
+
+init = 0
+
+if init == 0:
+    initialise(var)
+    init = 1
+	
+def updategui():
+	app.setLabel("label_starttime", starttime)
+	app.setLabel("label_pausetime", pausetime)
+	app.setLabel("label_stoptime", stoptime)
+	app.setLabel("label_elapsedtime", result)
+	app.setLabel("label_finaltime", strresult)
 #this is what happens when we click the submit button for name
 #it must accept an input, even if you don't need one			
 def submitname(var):
@@ -78,14 +88,37 @@ def starttimer(var):
 	#mainloop()
 	
 def pause(var):	
+	global ispaused, startpause, stoppause, pausetime
 	print "paused"
+
+	if ispaused == 2:
+		startpause = datetime.datetime.now().replace(microsecond=0)
+		print "pause clicked"
+		ispaused = 1
+		return
+	if ispaused == 1:
+		print "pause clicked again"
+		stoppause = datetime.datetime.now().replace(microsecond=0)
+		endtime = startpause - stoppause
+		endtimepos = -endtime
+		pausetime = pausetime + datetime.timedelta.total_seconds(endtimepos)
+		app.setLabel("label_pausetime", pausetime)
+		ispaused = 2
+		
+	print "endofpause"
+	print "time paused for:"
+	print pausetime
+	
+		
+	
+	
 	
 		
 
 
 #this is what happens when we click the stop button
 def stoptimer(var):
-	global stoptime, endtime, result
+	global stoptime, endtime, result, pausetime
 	#global timerstarted
 	stoptime = datetime.datetime.now().replace(microsecond=0)
 	print "Stop Time: "
@@ -94,6 +127,8 @@ def stoptimer(var):
 	endtime = starttime - stoptime
 	result = datetime.timedelta.total_seconds(endtime)
 	result = -result
+	app.setLabel("label_elapsedtime", result)
+	result = result - pausetime
 	strresult = str (result)
 	print "seconds: "
 	print result
@@ -102,8 +137,6 @@ def stoptimer(var):
 	#our timer control variable is set to zero, off
 	#timerstarted = 0
 	
-
-
 ### fillings go here ###
 #addLabel ([ident],[text])
 #setLabelBg ([ident],[colour])
@@ -123,14 +156,21 @@ app.addLabel("label_starttime_prefix", "Start time:")
 app.addLabel("label_starttime", "")
 app.addLabel("stoptime_time_prefix", "Stop time:")
 app.addLabel("label_stoptime", "")
-app.addLabel("finaltime_time_prefix", "Final time:")
+app.addLabel("pausetime_time_prefix", "Time paused:")
+app.addLabel("label_pausetime", "")
+app.addLabel("elapsed_time_prefix", "Time elapsed:")
+app.addLabel("label_elapsedtime", "")
+app.addLabel("finaltime_time_prefix", "Total time:")
 app.addLabel("label_finaltime", "")
 app.addButton("Start", starttimer)
 app.addButton("Pause", pause)
 app.addButton("Stop", stoptimer)
+app.addButton("Clear", initialise)
 app.stopTab()
 
 app.stopTabbedFrame()
+
+
 
 
 # bottom slice - START the GUI
