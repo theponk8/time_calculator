@@ -10,13 +10,11 @@ global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppau
 # top slice - CREATE the GUI
 app = gui("Timecalc - GUI V0.02")
 
-#our timer has not started yet
-#we have not counted any seconds, minutes or hours
-#set our customer name to null if we just started
-#tie all of these into a def, so it does not get called and reset our variables every loop
 
-	
-#A loop that is supposed to count our seconds
+###############
+# ORPHAN CODE #
+###############
+
 '''
 def mainloop():
 	global timerstarted
@@ -32,8 +30,19 @@ def mainloop():
 		time.sleep(1)
 		#needs an interrupt of some description, realistically the if statement should work, but it does not
 		mainloop()
+
+#might swap over to this rather than in each function
+
+def updategui():
+	app.setLabel("label_starttime", starttime)
+	app.setLabel("label_pausetime", pausetime)
+	app.setLabel("label_stoptime", stoptime)
+	app.setLabel("label_elapsedtime", result)
+	app.setLabel("label_finaltime", strresult)
 '''
-	
+###################
+# OTHER FUNCTIONS #
+###################
 def initialise(var):
 	print "initialising variables"
 	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime, todo
@@ -52,6 +61,20 @@ def initialise(var):
 	
 
 init = 0
+
+	
+if init == 0:
+    initialise(var)
+    init = 1
+	
+
+####################
+# BUTTON FUNCTIONS #
+####################
+
+### Debug Button
+# For testing partially implemented stuff and displaying various variables
+# Should write this into a function that accepts a list of globals
 def debug(var):
 	#fill this out as needed
 	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime
@@ -59,21 +82,7 @@ def debug(var):
 	app.setLabel("debug_ispaused", ispaused)
 	app.setTextArea("todo_1", todo)
 	
-	
-if init == 0:
-    initialise(var)
-    init = 1
-	
-#might swap over to this rather than in each function
-'''
-def updategui():
-	app.setLabel("label_starttime", starttime)
-	app.setLabel("label_pausetime", pausetime)
-	app.setLabel("label_stoptime", stoptime)
-	app.setLabel("label_elapsedtime", result)
-	app.setLabel("label_finaltime", strresult)
-'''
-
+### Submit Button
 #this is what happens when we click the submit button for name
 #it must accept an input, even if you don't need one			
 def submitname(var):
@@ -83,7 +92,8 @@ def submitname(var):
 	name = app.getEntry("customername")
 	#then we print it out
 	print (name)
-	
+
+### Start Button	
 #this triggers when you click the start button
 def starttimer(var):
 	global starttime
@@ -98,20 +108,33 @@ def starttimer(var):
 	app.setLabel("label_starttime", starttime)
 	print "Start Time: "
 	print starttime
-	#not sure if this should be called elsewhere
-	#mainloop()
+
 	
+
+### Pause Button	
+#triggers when pause is clicked
+#this is virtually the same as the start/stop function
+'''
+ispaused 0 = error
+ispaused 2 = initial/have not clicked yet *set on initialise function
+ispaused 1 = we have clicked it
+'''
 def pause(var):	
 	global ispaused, startpause, stoppause, pausetime
-	print "paused"
-
+	print "pause function called"
+	#this is our first time clicking pause so do this:
 	if ispaused == 2:
+		#grab initial time
 		startpause = datetime.datetime.now().replace(microsecond=0)
 		print "pause clicked"
+		#we have now clicked pause
 		ispaused = 1
+		#get us out of here, because we only want to click once
 		return
+	#if we have clicked pause once already, do this:
 	if ispaused == 1:
 		print "pause clicked again"
+		#grab pause time, work out the difference, add it to our total pause time, update label, reset pause button
 		stoppause = datetime.datetime.now().replace(microsecond=0)
 		endtime = startpause - stoppause
 		endtimepos = -endtime
@@ -123,32 +146,34 @@ def pause(var):
 	print "time paused for:"
 	print pausetime
 	
-		
-	
-	
-	
-		
-
-
+### Stop Button	
 #this is what happens when we click the stop button
 def stoptimer(var):
 	global stoptime, endtime, result, pausetime
+	#theponk's placeholder cost variable:
 	z = 0
-	#global timerstarted
+	
+	#grab our stop time
 	stoptime = datetime.datetime.now().replace(microsecond=0)
 	print "Stop Time: "
 	print stoptime
+	#update stoptime on the ui
+	#do the math, figure out resulting time
 	app.setLabel("label_stoptime", stoptime)
 	endtime = starttime - stoptime
 	result = datetime.timedelta.total_seconds(endtime)
 	result = -result
+	#sends the total amount of time elapsed
 	app.setLabel("label_elapsedtime", result)
 	result = result - pausetime
 	strresult = str (result)
 	print "seconds: "
 	print result
 	print "Stop Clicked"
+	#sends the actual time elapsed (time elapsed - pause time)
 	app.setLabel("label_finaltime", strresult)
+	
+	#thanks for this
 	#calculate the cost
 	z = result /60 /30
 	#always charge $49.50 - This would appear to round up
@@ -156,27 +181,31 @@ def stoptimer(var):
 		z = z + 1
 	#calculates the price
 	cost = z * 49.50
+	#update the label for cost, complete with free formatting
 	app.setLabel("label_cost", '${:,.2f}'.format(cost))
-	#our timer control variable is set to zero, off
-	#timerstarted = 0
-	
-### fillings go here ###
+
+##############
+# UI SECTION #
+##############
 #addLabel ([ident],[text])
 #setLabelBg ([ident],[colour])
 #addButton ([ident],[function to to call])
+#set our icon and resolution
+
 app.setGeometry(640, 480)
 app.setIcon('icon.ico')
 
 
-
+#we have the whole thing in a frame
 app.startTabbedFrame("TabbedFrame",0,0)
-
+#customer tab
 app.startTab("Customer")
 app.addLabel("label_custname", "Name:")
 app.addEntry("customername")
 app.addButton("Submit", submitname)
 app.stopTab()
 
+#time calculation tab
 app.startTab("Time Calculation")
 app.addLabel("label_starttime_prefix", "Start time:",2)
 app.addLabel("label_starttime", "",2,1)
@@ -190,6 +219,7 @@ app.addLabel("finaltime_time_prefix", "Total time:",6)
 app.addLabel("label_finaltime", "",6,1)
 app.addLabel("cost_prefix", "Fee:",7)
 app.addLabel("label_cost", "",7,1)
+#control grouping
 app.startLabelFrame("Controls")
 app.addButton("Start", starttimer, 1, 0)
 app.addButton("Pause", pause,1,2)
@@ -199,7 +229,9 @@ app.stopLabelFrame()
 
 app.stopTab()
 
+#debug tab
 app.startTab("Debug & Tests")
+#debug
 app.startLabelFrame("Debug Data",1,0)
 app.addButton("debug", debug)
 app.addLabel("debug_1", "timerstarted: ")
@@ -207,9 +239,8 @@ app.addLabel("debug_timerstarted", "")
 app.addLabel("debug_2", "ispaused: ")
 app.addLabel("debug_ispaused", "")
 app.addLabel("debug_3", "etc")
-
-
 app.stopLabelFrame()
+#logging
 app.startLabelFrame("Logging Tests",1,1)
 app.addLabel("logging_1", "Put logging stuff here (hint: nothing to do with wood)")
 app.stopLabelFrame()
@@ -220,7 +251,7 @@ app.stopTab()
 
 
 
-
+#help tab
 app.startTab("Help")
 app.addLabel("label_help1", "Press the start button to start the timer.",2)
 app.addLabel("label_help2", "Press the pause button to start the pause timer.",3)
