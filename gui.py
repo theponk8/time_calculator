@@ -4,11 +4,11 @@ var = 0
 import datetime
 ### http://appjar.info/pythonWidgets/
 ### http://appjar.info/pythonWidgetGrouping/
-
+global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime, todo
 
 
 # top slice - CREATE the GUI
-app = gui("Timecalc - GUI V01")
+app = gui("Timecalc - GUI V0.02")
 
 #our timer has not started yet
 #we have not counted any seconds, minutes or hours
@@ -36,7 +36,7 @@ def mainloop():
 	
 def initialise(var):
 	print "initialising variables"
-	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime
+	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime, todo
 	name = "NULL"
 	seconds = 0
 	minutes = 0
@@ -47,19 +47,33 @@ def initialise(var):
 	stoppause = 0
 	startpause = 0
 	starttime = 0
+	todo = open('todo.txt', 'r').read()
+	
+	
 
 init = 0
-
+def debug(var):
+	#fill this out as needed
+	global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime
+	app.setLabel("debug_timerstarted", timerstarted)
+	app.setLabel("debug_ispaused", ispaused)
+	app.setTextArea("todo_1", todo)
+	
+	
 if init == 0:
     initialise(var)
     init = 1
 	
+#might swap over to this rather than in each function
+'''
 def updategui():
 	app.setLabel("label_starttime", starttime)
 	app.setLabel("label_pausetime", pausetime)
 	app.setLabel("label_stoptime", stoptime)
 	app.setLabel("label_elapsedtime", result)
 	app.setLabel("label_finaltime", strresult)
+'''
+
 #this is what happens when we click the submit button for name
 #it must accept an input, even if you don't need one			
 def submitname(var):
@@ -119,6 +133,7 @@ def pause(var):
 #this is what happens when we click the stop button
 def stoptimer(var):
 	global stoptime, endtime, result, pausetime
+	z = 0
 	#global timerstarted
 	stoptime = datetime.datetime.now().replace(microsecond=0)
 	print "Stop Time: "
@@ -134,6 +149,14 @@ def stoptimer(var):
 	print result
 	print "Stop Clicked"
 	app.setLabel("label_finaltime", strresult)
+	#calculate the cost
+	z = result /60 /30
+	#always charge $49.50 - This would appear to round up
+	if z < 1:
+		z = z + 1
+	#calculates the price
+	cost = z * 49.50
+	app.setLabel("label_cost", '${:,.2f}'.format(cost))
 	#our timer control variable is set to zero, off
 	#timerstarted = 0
 	
@@ -165,10 +188,45 @@ app.addLabel("elapsed_time_prefix", "Time elapsed:",5)
 app.addLabel("label_elapsedtime", "",5,1)
 app.addLabel("finaltime_time_prefix", "Total time:",6)
 app.addLabel("label_finaltime", "",6,1)
+app.addLabel("cost_prefix", "Fee:",7)
+app.addLabel("label_cost", "",7,1)
+app.startLabelFrame("Controls")
 app.addButton("Start", starttimer, 1, 0)
 app.addButton("Pause", pause,1,2)
 app.addButton("Stop", stoptimer,1,3)
 app.addButton("Clear", initialise,1,4)
+app.stopLabelFrame()
+
+app.stopTab()
+
+app.startTab("Debug & Tests")
+app.startLabelFrame("Debug Data",1,0)
+app.addButton("debug", debug)
+app.addLabel("debug_1", "timerstarted: ")
+app.addLabel("debug_timerstarted", "")
+app.addLabel("debug_2", "ispaused: ")
+app.addLabel("debug_ispaused", "")
+app.addLabel("debug_3", "etc")
+
+
+app.stopLabelFrame()
+app.startLabelFrame("Logging Tests",1,1)
+app.addLabel("logging_1", "Put logging stuff here (hint: nothing to do with wood)")
+app.stopLabelFrame()
+app.stopTab()
+app.startTab("Todo")
+app.addScrolledTextArea("todo_1")
+app.stopTab()
+
+
+
+
+app.startTab("Help")
+app.addLabel("label_help1", "Press the start button to start the timer.",2)
+app.addLabel("label_help2", "Press the pause button to start the pause timer.",3)
+app.addLabel("label_help3", "Press pause again to stop the pause timer.",4)
+app.addLabel("label_help4", "Upon pressing stop, the program will calculate the total time",5)
+app.addLabel("label_help5", "Pressing the debug button loads the todolist",5)
 app.stopTab()
 
 app.stopTabbedFrame()
