@@ -4,7 +4,7 @@
 #could add in a input for customer name : DONE
 #redo logging, or copy from original
 #load this file on startup, not on a button press
-
+#Add options menu - Need to do saving and loading from files first so we can have a config file
 
 
 !!!DONE
