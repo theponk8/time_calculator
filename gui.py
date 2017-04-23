@@ -1,7 +1,7 @@
 # import the library
 from appJar import gui
 var = 0
-import datetime, csv
+import datetime, csv, webbrowser
 ### http://appjar.info/pythonWidgets/
 ### http://appjar.info/pythonWidgetGrouping/
 global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime, todo
@@ -199,6 +199,9 @@ def pause(var):
 	print "time paused for:"
 	print pausetime
 	Customer.pausetime = pausetime
+#???
+def rick(var):
+	webbrowser.open("https://youtu.be/Gc2u6AFImn8")
 	
 ### Stop Button	
 #this is what happens when we click the stop button
@@ -282,6 +285,7 @@ app.addEntry("customername")
 app.addButton("Submit Name", submitname)
 app.addButton("Save", log_out)
 app.addButton("Load", log_in)
+app.addButton("?", rick)
 app.stopLabelFrame()
 
 app.stopTab()
