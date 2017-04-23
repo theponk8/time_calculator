@@ -9,7 +9,15 @@ global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppau
 
 # top slice - CREATE the GUI
 app = gui("Timecalc - GUI V0.02")
-
+#####################
+# CLASS & OTHER OOP #
+#####################
+class Customer:
+	name = "Default"
+	starttime = ""
+	stoptime = ""
+	cost = ""
+	time = ""
 
 ###############
 # ORPHAN CODE #
@@ -72,6 +80,40 @@ if init == 0:
 # BUTTON FUNCTIONS #
 ####################
 
+#Dumps the content of our data class to csv
+def log_out(var):
+	print "Begin Logging"
+	#Generate the filename by using the customer name
+	filename = Customer.name
+	filename += ".csv"
+	f =open(filename, 'w')
+
+
+	f.write(str (Customer.name))
+	f.write(",")
+	f.write(str (Customer.starttime))
+	f.write(",")
+	f.write(str (Customer.stoptime))
+	f.write(",")
+	f.write(str (Customer.cost))
+	f.write(",")
+	f.write(str (Customer.time))
+### not implemented
+def log_in(var):
+	filename = Customer.name
+	f =open(filename, 'r')
+	
+	
+	
+	
+	
+#Dumps the content of our data class to terminal
+def log_dump(var):
+	print (Customer.name)
+	print (Customer.starttime)
+	print (Customer.stoptime)
+	print (Customer.cost)
+
 ### Debug Button
 # For testing partially implemented stuff and displaying various variables
 # Should write this into a function that accepts a list of globals
@@ -92,6 +134,9 @@ def submitname(var):
 	name = app.getEntry("customername")
 	#then we print it out
 	print (name)
+	#add to our class
+	Customer.name = name
+	
 
 ### Start Button	
 #this triggers when you click the start button
@@ -108,6 +153,7 @@ def starttimer(var):
 	app.setLabel("label_starttime", starttime)
 	print "Start Time: "
 	print starttime
+	Customer.starttime = starttime
 
 	
 
@@ -145,6 +191,7 @@ def pause(var):
 	print "endofpause"
 	print "time paused for:"
 	print pausetime
+	Customer.pausetime = pausetime
 	
 ### Stop Button	
 #this is what happens when we click the stop button
@@ -172,7 +219,7 @@ def stoptimer(var):
 	print "Stop Clicked"
 	#sends the actual time elapsed (time elapsed - pause time)
 	app.setLabel("label_finaltime", strresult)
-	
+	Customer.time = strresult
 	#thanks for this
 	#calculate the cost
 	z = result /60 /30
@@ -183,6 +230,8 @@ def stoptimer(var):
 	cost = z * 49.50
 	#update the label for cost, complete with free formatting
 	app.setLabel("label_cost", '${:,.2f}'.format(cost))
+	Customer.cost = cost
+	Customer.stoptime = stoptime
 
 ##############
 # UI SECTION #
@@ -243,6 +292,8 @@ app.stopLabelFrame()
 #logging
 app.startLabelFrame("Logging Tests",1,1)
 app.addLabel("logging_1", "Put logging stuff here (hint: nothing to do with wood)")
+app.addButton("log", log_out)
+app.addButton("dumpdata", log_dump)
 app.stopLabelFrame()
 app.stopTab()
 app.startTab("Todo")
