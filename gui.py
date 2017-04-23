@@ -1,7 +1,7 @@
 # import the library
 from appJar import gui
 var = 0
-import datetime
+import datetime, csv
 ### http://appjar.info/pythonWidgets/
 ### http://appjar.info/pythonWidgetGrouping/
 global name, seconds, minutes, hours, timerstarted, ispaused, pausetime, stoppause, startpause, starttime, todo
@@ -83,6 +83,7 @@ if init == 0:
 #Dumps the content of our data class to csv
 def log_out(var):
 	print "Begin Logging"
+	global filename
 	#Generate the filename by using the customer name
 	filename = Customer.name
 	filename += ".csv"
@@ -100,8 +101,14 @@ def log_out(var):
 	f.write(str (Customer.time))
 ### not implemented
 def log_in(var):
+	global filename
 	filename = Customer.name
-	f =open(filename, 'r')
+	filename += ".csv"
+	f = open(filename, 'r') 
+	readfile = csv.reader(f, delimiter=' ', quotechar='|')
+	#Customer.name = readfile[0]
+	for row in readfile:
+		print ','.join(row)
 	
 	
 	
@@ -248,11 +255,7 @@ app.setIcon('icon.ico')
 #we have the whole thing in a frame
 app.startTabbedFrame("TabbedFrame",0,0)
 #customer tab
-app.startTab("Customer")
-app.addLabel("label_custname", "Name:")
-app.addEntry("customername")
-app.addButton("Submit", submitname)
-app.stopTab()
+
 
 #time calculation tab
 app.startTab("Time Calculation")
@@ -274,6 +277,11 @@ app.addButton("Start", starttimer, 1, 0)
 app.addButton("Pause", pause,1,2)
 app.addButton("Stop", stoptimer,1,3)
 app.addButton("Clear", initialise,1,4)
+app.addLabel("label_custname", "Name:")
+app.addEntry("customername")
+app.addButton("Submit Name", submitname)
+app.addButton("Save", log_out)
+app.addButton("Load", log_in)
 app.stopLabelFrame()
 
 app.stopTab()
